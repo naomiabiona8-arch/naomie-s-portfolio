@@ -53,7 +53,7 @@ const AboutUs = () => {
                   to="/contact"
                   className="text-sm font-semibold text-gray-900"
                 >
-                  naomiabiona8@gmail.com
+                  abionanaomi29@gmail.com
                 </Link>
                 <p className="text-xs text-gray-500">
                   Available daily · 5:00 PM – 8:00 PM
