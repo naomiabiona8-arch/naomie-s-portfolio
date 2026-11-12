@@ -1,37 +1,5 @@
 import { useState } from "react";
 
-function Section({
-  id,
-  className = "",
-  children,
-}: {
-  id?: string;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className={`py-20 sm:py-28 ${className}`}>
-      <div className="max-w-6xl mx-auto px-5 sm:px-8">{children}</div>
-    </section>
-  );
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-emerald-600 text-xs font-semibold tracking-widest uppercase mb-3">
-      {children}
-    </p>
-  );
-}
-
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="font-display text-4xl sm:text-5xl text-gray-900 leading-tight mb-4">
-      {children}
-    </h2>
-  );
-}
-
 const faqs = [
   {
     q: "What sevices do you offer?",
@@ -70,11 +38,15 @@ const faqs = [
 const Faq = () => {
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <Section id="faq" className="bg-stone-50">
-      <div className="max-w-3xl mx-auto animate-fade-up">
-        <div className="text-center mb-12">
-          <SectionLabel>FAQ</SectionLabel>
-          <SectionHeading>Common Questions</SectionHeading>
+    <section>
+      <div className="animate-fade-up mt-20 mx-auto max-w-4xl px-5">
+        <div className="text-center mb-14">
+          <p className="text-emerald-600 text-xs font-semibold tracking-widest uppercase mb-3">
+            FAQ
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl text-gray-900 leading-tight mb-4">
+            Common Questions
+          </h2>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -122,7 +94,7 @@ const Faq = () => {
           ))}
         </div>
       </div>
-    </Section>
+    </section>
   );
 };
 

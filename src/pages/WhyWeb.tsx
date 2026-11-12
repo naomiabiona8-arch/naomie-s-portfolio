@@ -1,19 +1,3 @@
-function Section({
-  id,
-  className = "",
-  children,
-}: {
-  id?: string;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className={`py-20 sm:py-28 ${className}`}>
-      <div className="max-w-6xl mx-auto px-5 sm:px-8">{children}</div>
-    </section>
-  );
-}
-
 const whyPoints = [
   {
     icon: "🔍",
@@ -49,7 +33,10 @@ const whyPoints = [
 
 const WhyWeb = () => {
   return (
-    <Section id="why" className="bg-gray-950">
+    <section
+      id="why"
+      className="bg-gray-950 py-20 sm:py-28 max-w-8xl mx-auto px-5 sm:px-8"
+    >
       <div className="text-center mb-14 animate-fade-up">
         <p className="text-emerald-400 text-xs font-semibold tracking-widest uppercase mb-3">
           The Case for Getting Online
@@ -79,7 +66,7 @@ const WhyWeb = () => {
           </div>
         ))}
       </div>
-    </Section>
+    </section>
   );
 };
 
