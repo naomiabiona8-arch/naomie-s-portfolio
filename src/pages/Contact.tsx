@@ -1,12 +1,14 @@
 import { useState } from "react";
 
-const EMAIL = "abionanaomi29@gmail.com";
+const EMAIL = "naomiabiona8@gmail.com";
 
 const inputClass =
   "w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all";
 
 const Contact = () => {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -14,24 +16,39 @@ const Contact = () => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSending(true);
+    setError("");
 
-    const subject = `Website enquiry from ${form.name}`;
-    const body = [
-      `Name: ${form.name}`,
-      `Email: ${form.email}`,
-      `Phone: ${form.phone || "Not provided"}`,
-      "",
-      form.message,
-    ].join("\n");
+    try {
+      const res = await fetch(`https://formsubmit.co/ajax/${EMAIL}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone || "Not provided",
+          message: form.message,
+          _subject: `Website enquiry from ${form.name}`,
+          _replyto: form.email,
+        }),
+      });
 
-    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-
-    setSent(true);
-    setForm({ name: "", email: "", phone: "", message: "" });
+      if (res.ok) {
+        setSent(true);
+        setForm({ name: "", email: "", phone: "", message: "" });
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -89,10 +106,11 @@ const Contact = () => {
             <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-10 text-center">
               <span className="text-5xl block mb-4">🎉</span>
               <h3 className="font-semibold text-gray-900 text-xl mb-2">
-                Your email client should have opened!
+                Message sent!
               </h3>
               <p className="text-gray-500 text-sm">
-                If it didn't, email me directly at{" "}
+                Thanks for reaching out. I'll get back to you soon. You can also
+                email me directly at{" "}
                 <a
                   href={`mailto:${EMAIL}`}
                   className="font-semibold text-gray-900 underline"
@@ -127,6 +145,7 @@ const Contact = () => {
                   </label>
                   <input
                     id="name"
+                    name="name"
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -143,8 +162,9 @@ const Contact = () => {
                   </label>
                   <input
                     id="email"
-                    required
+                    name="email"
                     type="email"
+                    required
                     value={form.email}
                     onChange={(e) =>
                       setForm({ ...form, email: e.target.value })
@@ -164,6 +184,7 @@ const Contact = () => {
                 </label>
                 <input
                   id="phone"
+                  name="phone"
                   type="tel"
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -181,6 +202,7 @@ const Contact = () => {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   required
                   rows={4}
                   value={form.message}
@@ -194,13 +216,15 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="bg-emerald-600 text-white font-semibold py-4 rounded-xl hover:bg-emerald-700 transition-colors text-sm"
+                disabled={sending}
+                className="bg-emerald-600 text-white font-semibold py-4 rounded-xl hover:bg-emerald-700 transition-colors text-sm disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Send Message →
+                {sending ? "Sending..." : "Send Message →"}
               </button>
-              <p className="text-gray-400 text-xs text-center">
-                This will open your email client with the message pre-filled.
-              </p>
+
+              {error && (
+                <p className="text-red-600 text-xs text-center">{error}</p>
+              )}
             </form>
           )}
         </div>
