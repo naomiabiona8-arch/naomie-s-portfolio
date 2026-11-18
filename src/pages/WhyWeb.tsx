@@ -45,7 +45,7 @@ const WhyWeb = () => {
           Why does your business need a website?
         </h2>
         <p className="text-gray-400 max-w-xl mx-auto">
-          Most local businesses and tuition centers in India don't have one.
+          Most local businesses and tuition centers currently don't have one.
           That's actually an opportunity.
         </p>
       </div>
